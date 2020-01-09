@@ -72,5 +72,17 @@ ___
 * Fermeture du programme
 
 ---
+#### Idées diverses (libs) :
 
-_Version 1.0 - 09/01/2020 - Oliten_
+Relation SQL <> Python :
+* Lib Sqlite3
+* mysql-connector
+
+Recupération des données d'Open Fact Food :
+* Scrappy (récup de données HTML en JSON)
+* requests (requetes sur API en JSON)
+* json (Encodage et décodage fichier JSON)
+---
+#### Versions :
+* _Version 1.1 - 09/01/2020 - Oliten : Ajout "Idées diverses" & "Versions"_ 
+* _Version 1.0 - 09/01/2020 - Oliten : Premiére diffusion_ 
