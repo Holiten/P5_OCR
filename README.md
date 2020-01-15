@@ -21,26 +21,26 @@ ___
 
 ##### __*Accueil*__
 
-* Creer un nouveau profil
-* Se connecter 
+* ~~Creer un nouveau profil~~
+* ~~Se connecter~~
 * Nouvelle recherche
 * Voir mes recherches enregistrées (nécessite un compte)
 * Quitter
     
-##### __*Creer un nouveau profil*__
+##### __*~~Creer un nouveau profil~~*__
 
-* Information a entrer par l'utilisateur 
-    * Input -- Nom d'utilisateur (pas de chiffre, pas de caractéres spéciaux)
-    * Input -- Mail
-    * Input -- Mot de passe 
-    * Input -- Valider -- Y or N (gestion des erreurs) (Retour à l'acceuil aprés Y)
-    * Retour à l'accueil
+* ~~Information a entrer par l'utilisateur~~
+    * ~~Input -- Nom d'utilisateur (pas de chiffre, pas de caractéres spéciaux)~~
+    * ~~Input -- Mail~~
+    * ~~Input -- Mot de passe~~
+    * ~~Input -- Valider -- Y or N (gestion des erreurs) (Retour à l'acceuil aprés Y)~~
+    * ~~Retour à l'accueil~~
 
-##### __*Se connecter*__
+##### __*~~Se connecter~~*__
 
-* Nom d'utilisateur
-* Mot de passe
-* Retour à l'accueil
+* ~~Nom d'utilisateur~~
+* ~~Mot de passe~~
+* ~~Retour à l'accueil~~
 
 ##### __*Nouvelle recherche*__
 
@@ -61,7 +61,7 @@ ___
         * Aliment N°1 --- Substitut + Description + Magasin + lien vers Open Food Fact
         * Etc...
 
-##### __*Voir mes recherches enregistrées (nécessite un compte)*__
+##### __*Voir mes recherches enregistrées ~~(nécessite un compte)~~*__
 
 * Recherche(s) enregistrée(s)
     * Recherche 1
@@ -84,5 +84,6 @@ Recupération des données d'Open Fact Food :
 * json (Encodage et décodage fichier JSON)
 ---
 #### Versions :
+* _Version 1.2 - 13/01/2020 - Oliten : Mise à jour suivant mentor_ 
 * _Version 1.1 - 09/01/2020 - Oliten : Ajout "Idées diverses" & "Versions"_ 
 * _Version 1.0 - 09/01/2020 - Oliten : Premiére diffusion_ 
