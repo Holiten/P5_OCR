@@ -20,22 +20,9 @@ class off_api():
                     for products in products_by_page:
 
                         cat_name = cat_key
-                        name_product = products.get('product_name_fr', 'NO_DATA') # Evitez le try except
-
-
-                        try:
-                            score_product = products['nutriscore_grade']
-                        except KeyError:
-                            score_product = 'X'
-
-                        try:
-                            url_product = products['url']
-                        except KeyError:
-                            url_product = 'NO_DATA'
-
-                        try:
-                            store_product = products['stores']
-                        except KeyError:
-                            store_product = 'NO_DATA'
+                        name_product = products.get('product_name_fr', 'NO_DATA')
+                        score_product = products.get('nutriscore_grade', 'X')
+                        url_product = products.get('url', 'NO_DATA')
+                        store_product = products.get('store', 'NO_DATA')
 
                         self.product_data.append([cat_name, name_product, score_product, url_product, store_product])
