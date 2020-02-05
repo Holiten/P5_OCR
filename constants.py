@@ -7,9 +7,11 @@ CATEGORIES = {'Viandes': 'https://fr.openfoodfacts.org/categorie/viandes/',
               'Fromages': 'https://fr.openfoodfacts.org/categorie/fromages/',
               'Bieres': 'https://fr.openfoodfacts.org/categorie/bieres/'}
 
+"""
 CAT_1 = 'Viandes'
 CAT_2 = 'Fromages'
 CAT_3 = 'Bieres'
+"""
 
 # Convertion URL de CATEGORIES en JSON - Récupération des données Open Food Fact
 for cat_key, cat_value in CATEGORIES.items():

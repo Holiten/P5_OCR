@@ -1,5 +1,5 @@
 import requests
-import json
+# import json
 import mysql.connector
 from constants import PAGE_NUMBER
 from constants import CATEGORIES
@@ -24,15 +24,16 @@ class Products:
                     r_page_json = r_page.json()
                     products_by_page = r_page_json[u'products']
 
-                    with open('products.json', 'w') as fp:
-                        json.dump(r_page_json, fp, indent=5)
+                    # with open('products.json', 'w') as fp:
+                        # json.dump(r_page_json, fp, indent=5)
 
                     for products in products_by_page:
 
                         cat_name = cat_key
 
                         try:
-                            name_product = products['product_name']
+                            name_product = products['product_name_fr']
+                            name_product = products.get('product_name_fr', 'NO_DATA') # Evitez le try except
                         except KeyError:
                             name_product = 'NO_DATA'
 
@@ -63,12 +64,20 @@ class Products:
                  "(NULL, 'Bieres')")
         cursor.executemany("INSERT INTO products (id_product, cat_name, name_product, score_product, url_product, store_product) "
                            "VALUES (NULL, %s, %s, %s, %s, %s)", data)
-
+        # cursor.execute("SELECT COUNT(*) AS nrb_doublon, id_cat, cat_name
         db_connection.commit()
         db_connection.close()
 
+
+# Test des fonctions
 test = Products()
 test.off_to_me()
 test.send_to_bdd()
 
+"""
+QUESTIONS POUR NICO : 
+
+- Bypass les colonnes vides ou non indiquées
+- Gerer les doublons 
+"""
 
