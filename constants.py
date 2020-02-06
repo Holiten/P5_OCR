@@ -40,5 +40,18 @@ PAGE_NUMBER = 3
 USER_NAME = 'root'
 USER_PASSWORD = ''
 USER_HOST = 'localhost'
-DB_NAME = 'OPENFOODFACT'
+DB_NAME = 'test_bruno'
 PASSWORD_TYPE = 'mysql_native_password'
+
+CONFIG_BDD = {'user' : USER_NAME,
+              'password' : USER_PASSWORD,
+              'host' : USER_HOST,
+              'auth_plugin' : PASSWORD_TYPE
+              }
+
+CONFIG_TABLES = {'user' : USER_NAME,
+                 'password' : USER_PASSWORD,
+                 'host' : USER_HOST,
+                 'database' : DB_NAME,
+                 'auth_plugin' : PASSWORD_TYPE
+                 }
