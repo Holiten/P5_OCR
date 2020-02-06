@@ -25,8 +25,8 @@ class bdd_api():
                         name_cat = cat_key
                         name_product = products.get('product_name_fr', 'NULL')
                         score_product = products.get('nutriscore_grade', 'NULL')
-                        url_product = products.get('url', 'NULL')
-                        store_product = products.get('store', 'NULL')
+                        url_product = products.get('url', 'Non renseigné')
+                        store_product = products.get('store', 'Non renseigné')
 
                         self.product_data.append([name_cat, name_product, score_product, url_product, store_product])
         print("Merci d'avoir patienter !")
@@ -36,9 +36,11 @@ class bdd_api():
         cnx = mysql.connector.connect(**CONFIG_BDD)
         cursor = cnx.cursor()
 
+        cursor.execute("DROP DATABASE IF EXISTS open_food_fact")
+
         try :
             cursor.execute(
-                "CREATE DATABASE IF NOT EXISTS `test_bruno` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci"
+                "CREATE DATABASE IF NOT EXISTS `open_food_fact` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci"
             )
         except cnx.Error as err:
             print("Erreur lors de la création de la base de donnée")
@@ -50,9 +52,9 @@ class bdd_api():
         cursor = cnx.cursor()
         drop = "DROP TABLE IF EXISTS products, categories "
 
-        prod_table = "CREATE TABLE IF NOT EXISTS products (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, name_cat VARCHAR(255) NOT NULL, name_product VARCHAR(255) NOT NULL, score_product VARCHAR(1) NOT NULL, url_product VARCHAR(1000) NOT NULL, store_product VARCHAR(255) NOT NULL, INDEX(name_cat), CONSTRAINT blabla FOREIGN KEY(name_cat) REFERENCES categories(name_cat))"
+        prod_table = "CREATE TABLE IF NOT EXISTS products (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, name_cat VARCHAR(50) NOT NULL, name_product VARCHAR(500) NOT NULL, score_product VARCHAR(1) NOT NULL, url_product VARCHAR(5000) NOT NULL, store_product VARCHAR(255) NOT NULL, INDEX(name_cat), CONSTRAINT blabla FOREIGN KEY(name_cat) REFERENCES categories(name_cat))"
 
-        cat_table = "CREATE TABLE IF NOT EXISTS categories(id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, name_cat VARCHAR(255) NOT NULL, INDEX(name_cat))"
+        cat_table = "CREATE TABLE IF NOT EXISTS categories(id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, name_cat VARCHAR(50) NOT NULL, INDEX(name_cat))"
 
         try :
             cursor.execute(drop)
@@ -69,7 +71,7 @@ class bdd_api():
         cnx = mysql.connector.connect(**CONFIG_TABLES)
         cursor = cnx.cursor()
 
-        insert_cat = "INSERT INTO categories (id, name_cat) VALUES (NULL, 'Viandes'), (NULL, 'Fromages'),(NULL, 'Bieres')"
+        insert_cat = "INSERT INTO categories (id, name_cat) VALUES (NULL, 'Snacks'), (NULL, 'Fromages'),(NULL, 'Boissons')"
 
         cursor.execute(insert_cat)
         cnx.commit()
@@ -92,7 +94,9 @@ class bdd_api():
         cursor = cnx.cursor()
 
         delete_score_null = "DELETE FROM products WHERE score_product='N'"
+        delete_name_null = "DELETE FROM products WHERE name_product='NULL' AND name_product=''"
 
         cursor.execute(delete_score_null)
+        cursor.execute(delete_name_null)
         cnx.commit()
-        cnx.close()
+        cnx.close

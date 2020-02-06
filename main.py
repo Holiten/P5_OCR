@@ -6,8 +6,7 @@ bdd = bdd_api()
 bdd.api_temp()
 bdd.create_db()
 bdd.create_tables()
-
 bdd.send_cat_to_db()
 bdd.send_product_to_db()
-
 bdd.erase_void()
+

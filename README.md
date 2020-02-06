@@ -84,6 +84,7 @@ Recupération des données d'Open Fact Food :
 * json (Encodage et décodage fichier JSON)
 ---
 #### Versions :
+* _Version 1.2.1 - 06/02/2020 - Oliten : Mise à jour suivant mentor_ 
 * _Version 1.2 - 13/01/2020 - Oliten : Mise à jour suivant mentor_ 
 * _Version 1.1 - 09/01/2020 - Oliten : Ajout "Idées diverses" & "Versions"_ 
 * _Version 1.0 - 09/01/2020 - Oliten : Premiére diffusion_ 
