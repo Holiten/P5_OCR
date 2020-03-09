@@ -15,35 +15,39 @@ class Bdd:
         self.cat_choice = ""
         self.product_choice = ""
         self.user_save = ""
+        self.exist = []
 
     def load_data(self):
         """Method to load data from Api"""
-        for page in range(0, PAGE_NUMBER + 1):
-            for cat_key, cat_value in CATEGORIES.items():
-                if cat_key:
-                    r_page = requests.get(cat_value + str(page + 1) + ".json")
-                    r_page_json = r_page.json()
-                    products_by_page = r_page_json[u'products']
+        if self.exist == [('ocr_p5',)]:
+            print("")
+        else:
+            for page in range(0, PAGE_NUMBER + 1):
+                for cat_key, cat_value in CATEGORIES.items():
+                    if cat_key:
+                        r_page = requests.get(cat_value + str(page + 1) + ".json")
+                        r_page_json = r_page.json()
+                        products_by_page = r_page_json[u'products']
 
-                    for products in products_by_page:
-                        prod = Products(cat_key, [
-                            products.get('product_name_fr', 'NULL'),
-                            products.get('nutriscore_grade', 'NULL'),
-                            products.get('url', 'No data'),
-                            products.get('stores', 'No data')])
-                        if prod.product_name not in ['', 'NULL'] and \
-                                prod.product_score not in ['', 'N'] and\
-                                prod.product_store not in ['', 'No data']:
-                            self.products_data.append(prod)
+                        for products in products_by_page:
+                            prod = Products(cat_key, [
+                                products.get('product_name_fr', 'NULL'),
+                                products.get('nutriscore_grade', 'NULL'),
+                                products.get('url', 'No data'),
+                                products.get('stores', 'No data')])
+                            if prod.product_name not in ['', 'NULL'] and \
+                                    prod.product_score not in ['', 'N'] and \
+                                    prod.product_store not in ['', 'No data']:
+                                self.products_data.append(prod)
 
     def bdd_exist(self):
         """Method to verify if bdd exist"""
-        exist = []
-        sql = "SHOW DATABASES like 'open_food_fact'"
+        sql = "SHOW DATABASES like 'ocr_p5'"
         self.cursor.execute(sql)
         for elems in self.cursor:
-            exist.append(elems)
-            return exist
+            self.exist.append(elems)
+            return self.exist
+
 
     def bdd_create(self):
         """Method to create bdd"""
@@ -186,3 +190,7 @@ class Bdd:
               "and available online at this URL :",
               str(comp_substitue[4]))
         self.user_save = input("\nDo you want to save your product ? ")
+
+test = Bdd()
+test.bdd_exist()
+test.load_data()

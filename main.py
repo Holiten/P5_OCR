@@ -7,8 +7,8 @@ from constants import CAT_1, CAT_2, CAT_3
 BDD = Bdd()
 
 print("Welcome to Pur Beurre")
-BDD.load_data()
 BDD.bdd_exist()
+BDD.load_data()
 BDD.bdd_create()
 BDD.bdd_use()
 BDD.bdd_tables()
@@ -32,8 +32,8 @@ def main_menu():
     elif uc_main == "Q" or "q":
         quit_pb()
 
-    else:
-        main_menu()
+    else: #fonctionne pas
+        print("Choose a number or a letter corresponding to a choice")
 
 def cat_menu(): # preferable : dictionnaire
     """Categories menu"""
@@ -45,7 +45,7 @@ def cat_menu(): # preferable : dictionnaire
 
     uc_cat = input(" >> ")
 
-    if uc_cat == "F":
+    if uc_cat == "F" or "f":
         BDD.bdd_use()
         BDD.get_cat(CAT_2)
         BDD.get_product(CAT_2)
@@ -83,6 +83,9 @@ def cat_menu(): # preferable : dictionnaire
 
     elif uc_cat == "Q":
         quit_pb()
+    else:
+        print("Choose a number or a letter corresponding to a choice")
+        cat_menu()
 
 def sauv_menu():
     """Save menu"""
