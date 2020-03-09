@@ -1,4 +1,4 @@
-"""File to create the product object and its methods"""
+"""V.2.0 - File to create the products object and its methods"""
 
 import mysql.connector
 from constants import CONFIG_TABLES

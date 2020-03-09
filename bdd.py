@@ -1,191 +1,136 @@
-"""
-Version 1.4 :  Optimisation & Suppression function 'erase_void'
-Version 1.3 : PEP convention
-Version 1.2 : Modifications & optimisation
-Version 1.1 : Pseudo-code
-Version 1.0 : Initialisation
-The following scripts manage the Open food fact's API and the database
-"""
+"""V.2.0 - File to create the bdd object and its methods"""
 
-import requests
+import sys
 import mysql.connector
-from constants import PAGE_NUMBER, CATEGORIES, CONFIG_BDD, CONFIG_TABLES
+import requests
+from products import Products
+from constants import CONFIG_BDD, PAGE_NUMBER, CATEGORIES
 
-class Bdd():
-    """
-    Create BddApi object to use data from Open food Fact API, create SQL BDD, create SQL Tables,
-    add data from api to bdd.
-    """
-
+class Bdd:
+    """Class to create the bdd object and its methods"""
     def __init__(self):
-        self.product_data = []
-        self.cat_list = []
+        self.products_data = []
+        self.cnx = mysql.connector.connect(**CONFIG_BDD)
+        self.cursor = self.cnx.cursor()
         self.cat_choice = ""
-        self.product_choice = 0
-        self.user_save = 0
+        self.product_choice = ""
+        self.user_save = ""
 
-    def api_temp(self):
-        """
-        Request Open food Fact API into variable with json and fill the empty list
-        """
-
-        for cat_key, cat_value in CATEGORIES.items():
-            if cat_key:
-                url_r = requests.get(cat_value + "1.json")
-                url_r_json = url_r.json()
-
-        print("Loading Open Food Fact API Data... \n")
-        for page in range(0, PAGE_NUMBER+1):
+    def load_data(self):
+        """Method to load data from Api"""
+        for page in range(0, PAGE_NUMBER + 1):
             for cat_key, cat_value in CATEGORIES.items():
                 if cat_key:
-                    r_page = requests.get(cat_value + str(page + 1) + '.json')
+                    r_page = requests.get(cat_value + str(page + 1) + ".json")
                     r_page_json = r_page.json()
                     products_by_page = r_page_json[u'products']
 
                     for products in products_by_page:
-                        name_cat = cat_key
-                        name_product = products.get('product_name_fr', 'NULL')
-                        score_product = products.get('nutriscore_grade', 'NULL')
-                        url_product = products.get('url', 'No data')
-                        store_product = products.get('stores', 'No data')
+                        prod = Products(cat_key, [
+                            products.get('product_name_fr', 'NULL'),
+                            products.get('nutriscore_grade', 'NULL'),
+                            products.get('url', 'No data'),
+                            products.get('stores', 'No data')])
+                        if prod.product_name not in ['', 'NULL'] and \
+                                prod.product_score not in ['', 'N'] and\
+                                prod.product_store not in ['', 'No data']:
+                            self.products_data.append(prod)
 
-                        if name_product not in ["", "NULL"] \
-                                and score_product not in ["", "N"] \
-                                and store_product not in ["", "No data"]:
-                            self.product_data.append([name_cat,
-                                                      name_product,
-                                                      score_product,
-                                                      url_product,
-                                                      store_product])
+    def bdd_exist(self):
+        """Method to verify if bdd exist"""
+        exist = []
+        sql = "SHOW DATABASES like 'open_food_fact'"
+        self.cursor.execute(sql)
+        for elems in self.cursor:
+            exist.append(elems)
+            return exist
 
-        print("The data has been loaded successfully")
-
-    @staticmethod
-    def create_db():
-        """
-        Create a bdd named 'open_food_fact'
-        """
-
-        cnx = mysql.connector.connect(**CONFIG_BDD)
-        cursor = cnx.cursor()
-
+    def bdd_create(self):
+        """Method to create bdd"""
+        sql = "CREATE DATABASE IF NOT EXISTS `ocr_p5` CHARACTER SET utf8"
         try:
-            cursor.execute(
-                "CREATE DATABASE IF NOT EXISTS `open_food_fact` "
-                "DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci"
-            )
-        except cnx.Error as err:
-            print(err)
-            exit(1)
+            self.cursor.execute(sql)
+            self.cnx.commit()
+            print("The database has been successfully created")
 
-    @staticmethod
-    def create_tables():
-        """
-        Create tables 'products / categorie / user_data'
-        in the bdd create previously by 'create_db(self)'
-        """
+        except mysql.connector.errors as error:
+            print(error)
+            print("A problem occurred during the creation of the bdd, please check your SQL server")
+            sys.exit()
 
-        cnx = mysql.connector.connect(**CONFIG_TABLES)
-        cursor = cnx.cursor()
+    def bdd_use(self):
+        """Method to use bdd"""
+        self.cnx.database = "ocr_p5"
 
-        prod_table = "CREATE TABLE IF NOT EXISTS products " \
-                     "(id INT NOT NULL AUTO_INCREMENT PRIMARY KEY," \
-                     " name_cat VARCHAR(50) NOT NULL," \
-                     " name_product VARCHAR(500) NOT NULL," \
-                     " score_product VARCHAR(1) NOT NULL," \
-                     " url_product VARCHAR(5000) UNIQUE NOT NULL," \
-                     " store_product VARCHAR(255) NOT NULL, INDEX(name_cat)," \
-                     " CONSTRAINT blabla FOREIGN KEY(name_cat) REFERENCES categories(name_cat))"
-        cat_table = "CREATE TABLE IF NOT EXISTS categories(id INT NOT NULL AUTO_INCREMENT PRIMARY KEY," \
-                    " name_cat VARCHAR(50) NOT NULL, INDEX(name_cat))"
-        user_data = "CREATE TABLE IF NOT EXISTS user_data(id INT NOT NULL AUTO_INCREMENT PRIMARY KEY," \
-                    " id_product INT NOT NULL," \
-                    " INDEX(id_product)," \
-                    " CONSTRAINT id_product FOREIGN KEY(id_product) REFERENCES products(id))"
+    def bdd_tables(self):
+        """Method to tables in bdd"""
+        sql_cat_table = "CREATE TABLE IF NOT EXISTS categories" \
+                        "(id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY," \
+                        "name_cat VARCHAR(50) UNIQUE NOT NULL," \
+                        "INDEX(name_cat))"
 
-        try:
-            cursor.execute(cat_table)
-            cursor.execute(prod_table)
-            cursor.execute(user_data)
+        sql_products_table = "CREATE TABLE IF NOT EXISTS products" \
+                             "(id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY," \
+                             "name_cat VARCHAR(50) NOT NULL," \
+                             "name_product VARCHAR(500) NOT NULL," \
+                             "score_product VARCHAR(1) NOT NULL," \
+                             "url_product VARCHAR(5000) UNIQUE NOT NULL," \
+                             "store_product VARCHAR(255) NOT NULL," \
+                             "INDEX(name_cat)," \
+                             "CONSTRAINT FOREIGN KEY(name_cat) REFERENCES categories(name_cat))"
 
-        except mysql.connector.Error as err:
-            print(err)
-            exit(1)
+        sql_user_sav = "CREATE TABLE IF NOT EXISTS user_save" \
+                       "(id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY," \
+                       "id_product INT(11) NOT NULL," \
+                       "id_sub INT(11) NOT NULL," \
+                       "INDEX(id_product)," \
+                       "CONSTRAINT FOREIGN KEY(id_product) REFERENCES products(id))"
 
-        cnx.close()
+        self.cursor.execute(sql_cat_table)
+        self.cursor.execute(sql_products_table)
+        self.cursor.execute(sql_user_sav)
+        self.cnx.commit()
 
-    @staticmethod
-    def send_cat_to_db():
-        """
-        Send data from list create with 'api_temp' to categories table
-        """
+    def apidata_to_bdd(self):
+        """Method to send data from Api to bdd"""
+        data_cat = []
+        data_prod = []
+        sql_cat = "INSERT IGNORE INTO categories (name_cat) VALUES (%s)"
+        sql_products = "INSERT IGNORE INTO products" \
+                       "(name_product, score_product, url_product, store_product, name_cat)" \
+                       " VALUES (%s, %s, %s, %s, %s)"
 
-        cnx = mysql.connector.connect(**CONFIG_TABLES)
-        cursor = cnx.cursor()
-        sql = "INSERT IGNORE INTO categories" \
-              " (id, name_cat) VALUES (1, 'Yaourts'), (2, 'Fromages'),(3, 'Boissons')"
-        try:
-            cursor.execute(sql)
-            cnx.commit()
-            cnx.close()
+        for cat in CATEGORIES:
+            data_cat.append([cat])
 
-        except mysql.connector.Error as err:
-            print(err)
-            exit(1)
+        for products in self.products_data:
+            data_prod.append(products.screen_prod())
 
-    def send_product_to_db(self):
-        """
-        Send data from list create with 'api_temp' to products table
-        """
-        data = self.product_data[:]
-
-        cnx = mysql.connector.connect(**CONFIG_TABLES)
-        cursor = cnx.cursor()
-        sql = "INSERT IGNORE INTO products(name_cat, name_product, score_product, url_product, store_product)" \
-              " VALUES (%s, %s, %s, %s, %s)"
-        clean_prod = "DELETE FROM products WHERE name_product='NULL' OR name_product='' OR score_product='N'"
-
-        try:
-            cursor.executemany(sql, data)
-            cnx.commit()
-            cursor.execute(clean_prod)
-            cnx.commit()
-            cnx.close()
-
-        except mysql.connector.Error as err:
-            print(err)
-            exit(1)
-
-        print("The bdd was successfully created or loaded")
+        self.cursor.executemany(sql_cat, data_cat)
+        self.cursor.executemany(sql_products, data_prod)
+        self.cnx.commit()
 
     def get_cat(self, choice):
-        """
-        Retrieving categories and displaying them on the screen and choose one
-        """
+        """Retrieving categories and displaying them on the screen and choose one"""
         self.cat_choice = choice
-        cnx = mysql.connector.connect(**CONFIG_TABLES)
-        cursor = cnx.cursor()
         sql = "SELECT * FROM categories"
-        cursor.fetchone()
-        cursor.execute(sql)
+        self.cursor.fetchone()
+        self.cursor.execute(sql)
         # for table_cat in cursor:
-            # self.cat_list.append(table_cat[1])
+        # self.cat_list.append(table_cat[1])
         self.cat_choice = str(choice)
         self.cat_choice = (self.cat_choice,)
-
+        print(self.cat_choice)
 
     def get_product(self, choice):
-        """
-        Retrieving products and displaying them on the screen and choose one
-        """
+        """Retrieving products and displaying them on the screen and choose one"""
         self.cat_choice = choice
         choice = (choice,)
-        cnx = mysql.connector.connect(**CONFIG_TABLES)
-        cursor = cnx.cursor()
         sql = "SELECT * FROM products WHERE name_cat=%s"
-        cursor.execute(sql, choice)
-        print(cursor)
-        for table_prod in cursor:
+        self.cursor.fetchall()
+        self.cursor.execute(sql, choice)
+
+        for table_prod in self.cursor:
             print("ID :", table_prod[0],
                   "/ Product :", table_prod[2],
                   "/ Nutriscore :", table_prod[3],
@@ -195,24 +140,43 @@ class Bdd():
         self.product_choice = int(self.product_choice)
         self.product_choice = (self.product_choice,)
 
+
+    def save_product(self):
+        """Method save a product"""
+        print(self.product_choice)
+        sql = "INSERT INTO user_save (id_product) VALUES (%s)"
+        self.cursor.fetchall()
+        self.cursor.execute(sql, self.product_choice)
+        self.cnx.commit()
+
+    def get_saved(self):
+        """Method to get the saved products"""
+        sql = "SELECT name_product, score_product, url_product, store_product FROM products" \
+              " INNER JOIN user_save ON products.id = user_save.id_product"
+        # A revoir
+        self.cursor.execute(sql)
+        data = self.cursor.fetchall()
+        print("Here are the saved products :")
+        for i in data:
+            print("Product :", i[0],
+                  "/ Nutriscore :", i[1],
+                  "/ URL :", i[2],
+                  "/ Store :", i[3])
+
     def substitute(self):
-        """
-        Offer a substitute for the chosen product
-        """
+        """Offer a substitute for the chosen product"""
         self.cat_choice = (self.cat_choice,)
-        cnx = mysql.connector.connect(**CONFIG_TABLES)
-        cursor = cnx.cursor()
         sql = "SELECT * FROM products WHERE id=%s"
-        cursor.execute(sql, self.product_choice)
-        user_product = cursor.fetchone()
+        self.cursor.execute(sql, self.product_choice)
+        user_product = self.cursor.fetchone()
         print("You have chosen",
               str(user_product[2]).upper(),
               "with a score of",
               str(user_product[3]).upper(),
               "of nutriscore")
         sql = "SELECT * FROM products WHERE score_product='a' AND name_cat=%s ORDER BY RAND()"
-        cursor.execute(sql, self.cat_choice)
-        comp_substitue = cursor.fetchone()
+        self.cursor.execute(sql, self.cat_choice)
+        comp_substitue = self.cursor.fetchone()
         print("We recommend :",
               str(comp_substitue[2]),
               "from nutriscore",
@@ -222,31 +186,3 @@ class Bdd():
               "and available online at this URL :",
               str(comp_substitue[4]))
         self.user_save = input("\nDo you want to save your product ? ")
-
-    def save_product(self):
-        """
-        Save product choosen
-        """
-        print(self.product_choice)
-        cnx = mysql.connector.connect(**CONFIG_TABLES)
-        cursor = cnx.cursor()
-        sql = "INSERT INTO user_data (id_product) VALUES (%s)"
-        cursor.execute(sql, self.product_choice)
-        cnx.commit()
-
-    def get_save_product(self):
-        """
-        Get product choosen
-        """
-        cnx = mysql.connector.connect(**CONFIG_TABLES)
-        cursor = cnx.cursor()
-        sql = "SELECT name_product, score_product, url_product, store_product FROM products" \
-              " INNER JOIN user_data ON products.id = user_data.id_product"
-        cursor.execute(sql)
-        data = cursor.fetchall()
-        print("Here are the saved products :")
-        for i in data:
-            print("Product :", i[0],
-            "/ Nutriscore :", i[1],
-            "/ URL :", i[2],
-            "/ Store :", i[3])
