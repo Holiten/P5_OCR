@@ -10,12 +10,12 @@ ___
 * Python 3 ([installation](https://www.python.org/downloads/release/python-382/))
 * SQL Database & connexion SQL server (like [XAMPP](https://www.apachefriends.org/fr/index.html))
 ___
-#### Lancement du programme :
+#### Launch :
 * [Download](https://github.com/Holiten/P5_OCR) github repo
 * Install packages (pip install -r requirements.txt)
 * Launch (python main.py)
 ___
-#### Fonctionnalités :
+#### Features :
 
 + Search food in bdd with API [Open Food Fact](https://fr.openfoodfacts.org/)
     * Data recovery via Python script
