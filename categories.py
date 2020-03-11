@@ -1,4 +1,4 @@
-"""V.2.0 - File to create the categories object and its methods"""
+"""V 2.0 - File to create the categories object and its methods"""
 
 import mysql.connector
 from constants import CONFIG_TABLES

@@ -16,6 +16,7 @@ class Bdd:
         self.product_choice = ""
         self.user_save = ""
         self.exist = []
+        self.sub = ""
 
     def load_data(self):
         """Method to load data from Api"""
@@ -48,7 +49,6 @@ class Bdd:
             self.exist.append(elems)
             return self.exist
 
-
     def bdd_create(self):
         """Method to create bdd"""
         sql = "CREATE DATABASE IF NOT EXISTS `ocr_p5` CHARACTER SET utf8"
@@ -57,7 +57,7 @@ class Bdd:
             self.cnx.commit()
             print("The database has been successfully created")
 
-        except mysql.connector.errors as error:
+        except mysql.connector.Error as error:
             print(error)
             print("A problem occurred during the creation of the bdd, please check your SQL server")
             sys.exit()
@@ -88,7 +88,9 @@ class Bdd:
                        "id_product INT(11) NOT NULL," \
                        "id_sub INT(11) NOT NULL," \
                        "INDEX(id_product)," \
-                       "CONSTRAINT FOREIGN KEY(id_product) REFERENCES products(id))"
+                       "INDEX(id_sub)," \
+                       "CONSTRAINT FOREIGN KEY(id_product) REFERENCES products(id)," \
+                       "CONSTRAINT FOREIGN KEY(id_sub) REFERENCES products(id))"
 
         self.cursor.execute(sql_cat_table)
         self.cursor.execute(sql_products_table)
@@ -120,8 +122,6 @@ class Bdd:
         sql = "SELECT * FROM categories"
         self.cursor.fetchone()
         self.cursor.execute(sql)
-        # for table_cat in cursor:
-        # self.cat_list.append(table_cat[1])
         self.cat_choice = str(choice)
         self.cat_choice = (self.cat_choice,)
         print(self.cat_choice)
@@ -142,26 +142,35 @@ class Bdd:
                   "/ Store :", table_prod[5])
         self.product_choice = input("\nChoose a product by id number : ")
         self.product_choice = int(self.product_choice)
-        self.product_choice = (self.product_choice,)
-
 
     def save_product(self):
         """Method save a product"""
-        print(self.product_choice)
-        sql = "INSERT INTO user_save (id_product) VALUES (%s)"
+        sql = "INSERT INTO user_save (id_product, id_sub) VALUES (%s, %s)"
+        p_choice = str(self.product_choice)
+        p_sub = str(self.comp_substitue[0])
         self.cursor.fetchall()
-        self.cursor.execute(sql, self.product_choice)
+        data = [p_choice, p_sub]
+        self.cursor.execute(sql, data)
         self.cnx.commit()
 
     def get_saved(self):
         """Method to get the saved products"""
         sql = "SELECT name_product, score_product, url_product, store_product FROM products" \
               " INNER JOIN user_save ON products.id = user_save.id_product"
-        # A revoir
+        sql_sub = "SELECT name_product, score_product, url_product, store_product FROM products" \
+                  " INNER JOIN user_save ON products.id = user_save.id_sub"
         self.cursor.execute(sql)
         data = self.cursor.fetchall()
-        print("Here are the saved products :")
+        print("You had chooser :")
         for i in data:
+            print("Product :", i[0],
+                  "/ Nutriscore :", i[1],
+                  "/ URL :", i[2],
+                  "/ Store :", i[3])
+        self.cursor.execute(sql_sub)
+        sub_data = self.cursor.fetchall()
+        print("Replaced by :")
+        for i in sub_data:
             print("Product :", i[0],
                   "/ Nutriscore :", i[1],
                   "/ URL :", i[2],
@@ -171,7 +180,8 @@ class Bdd:
         """Offer a substitute for the chosen product"""
         self.cat_choice = (self.cat_choice,)
         sql = "SELECT * FROM products WHERE id=%s"
-        self.cursor.execute(sql, self.product_choice)
+        p_choice = (self.product_choice,)
+        self.cursor.execute(sql, p_choice)
         user_product = self.cursor.fetchone()
         print("You have chosen",
               str(user_product[2]).upper(),
@@ -180,17 +190,13 @@ class Bdd:
               "of nutriscore")
         sql = "SELECT * FROM products WHERE score_product='a' AND name_cat=%s ORDER BY RAND()"
         self.cursor.execute(sql, self.cat_choice)
-        comp_substitue = self.cursor.fetchone()
+        self.comp_substitue = self.cursor.fetchone()
         print("We recommend :",
-              str(comp_substitue[2]),
+              str(self.comp_substitue[2]),
               "from nutriscore",
-              str(comp_substitue[3]).upper(),
+              str(self.comp_substitue[3]).upper(),
               "buyable in stores :",
-              str(comp_substitue[5]),
+              str(self.comp_substitue[5]),
               "and available online at this URL :",
-              str(comp_substitue[4]))
+              str(self.comp_substitue[4]))
         self.user_save = input("\nDo you want to save your product ? ")
-
-test = Bdd()
-test.bdd_exist()
-test.load_data()

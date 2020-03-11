@@ -14,105 +14,146 @@ BDD.bdd_use()
 BDD.bdd_tables()
 BDD.apidata_to_bdd()
 
+
+
 def main_menu():
     """Main menu"""
-    print("1 - Choose a product")
-    print("2 - See favs products")
-    print("Q - Quit")
+    run = 1
+    while run == 1:
+        print("1 - Choose a product")
+        print("2 - See favs products")
+        print("Q - Quit")
 
-    uc_main = input(" >> ")
+        uc_main = input(" >> ")
 
-    if uc_main == "1":
-        cat_menu()
+        if uc_main == "1":
+            cat_menu()
+            run = 0
 
-    elif uc_main == "2":
-        BDD.get_saved()
-        main_menu()
+        elif uc_main == "2":
+            BDD.get_saved()
+            main_menu()
+            run = 0
 
-    elif uc_main == "Q" or "q":
-        quit_pb()
+        elif uc_main == "Q" or uc_main == "q":
+            quit_pb()
+            run = 0
 
-    else: #fonctionne pas
-        print("Choose a number or a letter corresponding to a choice")
+        else:
+            print("Choose a number or a letter corresponding to a choice")
+            run = 1
 
-def cat_menu(): # preferable : dictionnaire
+def cat_menu():
     """Categories menu"""
+    run = 1
     print("Y - Yaourts")
     print("F - Fromages")
-    print("B - Boissons")
+    print("S - Soupes")
     print("9 - Back to main menu")
     print("Q - Quit")
 
     uc_cat = input(" >> ")
 
-    if uc_cat == "F" or "f":
-        BDD.bdd_use()
-        BDD.get_cat(CAT_2)
-        BDD.get_product(CAT_2)
-        BDD.substitute()
-        if BDD.user_save == "Y":
-            BDD.save_product()
-            sauv_menu()
-        elif BDD.user_save == "N":
+    while run == 1:
+        if uc_cat == "F" or uc_cat == "f":
+            BDD.bdd_use()
+            BDD.get_cat(CAT_2)
+            BDD.get_product(CAT_2)
+            BDD.substitute()
+            if BDD.user_save == "Y" or BDD.user_save == "y":
+                BDD.save_product()
+                sauv_menu()
+                run = 0
+            elif BDD.user_save == "N" or BDD.user_save == "n":
+                main_menu()
+                run = 0
+            else:
+                print("Choose a number or a letter corresponding to a choice")
+                run = 1
+
+        elif uc_cat == "Y" or uc_cat == "y":
+            BDD.bdd_use()
+            BDD.get_cat(CAT_3)
+            BDD.get_product(CAT_3)
+            BDD.substitute()
+            if BDD.user_save == "Y" or BDD.user_save == "y":
+                BDD.save_product()
+                sauv_menu()
+                run = 0
+            elif BDD.user_save == "N" or BDD.user_save == "n":
+                main_menu()
+                run = 0
+            else:
+                print("Please choose a valid choice")
+                run = 1
+
+        elif uc_cat == "S" or uc_cat == "s":
+            BDD.bdd_use()
+            BDD.get_cat(CAT_1)
+            BDD.get_product(CAT_1)
+            BDD.substitute()
+            if BDD.user_save == "Y" or BDD.user_save == "y":
+                BDD.save_product()
+                sauv_menu()
+                run = 0
+            elif BDD.user_save == "N" or BDD.user_save == "n":
+                main_menu()
+                run = 0
+            else:
+                print("Please choose a valid choice")
+                run = 1
+
+        elif uc_cat == "9":
             main_menu()
 
-    elif uc_cat == "Y":
-        BDD.bdd_use()
-        BDD.get_cat(CAT_3)
-        BDD.get_product(CAT_3)
-        BDD.substitute()
-        if BDD.user_save == "Y":
-            BDD.save_product()
-            sauv_menu()
-        elif BDD.user_save == "N":
-            main_menu()
-
-    elif uc_cat == "B":
-        BDD.bdd_use()
-        BDD.get_cat(CAT_1)
-        BDD.get_product(CAT_1)
-        BDD.substitute()
-        if BDD.user_save == "Y":
-            BDD.save_product()
-            sauv_menu()
-        elif BDD.user_save == "N":
-            main_menu()
-
-    elif uc_cat == "9":
-        main_menu()
-
-    elif uc_cat == "Q":
-        quit_pb()
-    else:
-        print("Choose a number or a letter corresponding to a choice")
-        cat_menu()
+        elif uc_cat == "Q" or uc_cat == "q":
+            quit_pb()
+            run = 0
+        else:
+            print("Choose a number or a letter corresponding to a choice")
+            run = 1
 
 def sauv_menu():
     """Save menu"""
+    run = 1
     print("Product saved")
     print("9 - Back to main menu")
-    print("0 - Quit")
+    print("Q - Quit")
 
     uc_sauv = input(" >> ")
 
-    if uc_sauv == "9":
-        main_menu()
+    while run == 1:
+        if uc_sauv == "9":
+            main_menu()
+            run = 0
 
-    elif uc_sauv == "Q":
-        quit_pb()
+        elif uc_sauv == "Q" or uc_sauv == "q":
+            quit_pb()
+            run = 0
+
+        else:
+            print("Please choose a valid choice")
+            run = 1
 
 def back_or_quit():
     """Back or save menu"""
+    run = 1
     print("9 - Back to main menu")
     print("Q - Quit")
 
     uc_bq = input(" >> ")
+    while run == 1:
+        if uc_bq == "9":
+            main_menu()
+            run = 0
 
-    if uc_bq == "9":
-        main_menu()
+        elif uc_bq == "Q" or uc_bq == "q":
+            quit_pb()
+            run = 0
 
-    elif uc_bq == "0":
-        quit_pb()
+        else:
+            print("Please choose a valid choice")
+            run = 1
 
 def back():
     """Back menu"""

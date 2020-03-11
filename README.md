@@ -3,87 +3,64 @@ ___
 ___
 ###### *Project 5 - OpenClassRoom - DA Python*
 ___
-*Work in progress*
 
 ![PUR BEURRE](https://static.passeportsante.net/i85826-.jpeg)
+___
+#### Requirements :
+* Python 3 ([installation](https://www.python.org/downloads/release/python-382/))
+* SQL Database & connexion SQL server (like [XAMPP](https://www.apachefriends.org/fr/index.html))
+___
+#### Lancement du programme :
+* [Download](https://github.com/Holiten/P5_OCR) le repo github
+* Installation des packages (pip install -r requirements.txt)
+* Lancer le programme (python main.py)
 ___
 #### Fonctionnalités :
 
 + Recherche d'aliments dans la base [Open Food Fact](https://fr.openfoodfacts.org/)
     * Récuperation des données via un script
     * Creation d'une bdd (si celle ci n'existe pas) via un script
-+ Interraction de l'utilisateur via le terminal ou interface graphique
++ Interraction de l'utilisateur via le terminal ou interface graphique (amélioration future)
 + Gestion des erreurs (mauvais input)
 + Recherche via SQL
-+ Enregistrement (via un systeme de user & bdd)
++ Enregistrement
 ---
 #### User stories :
 
-##### __*Accueil*__
+##### __*Démarrage du programme*__
 
-* ~~Creer un nouveau profil~~
-* ~~Se connecter~~
-* Nouvelle recherche
-* Voir mes recherches enregistrées (nécessite un compte)
-* Quitter
+* User1 lance le programme pour la premiere fois :
+    * Creation de la bdd
+    * Creation des tables de la bdd
+    * Récupération des données de l'API Open Food Fact
+    * Insertion des données dans la bdd
+    * Accés au menu principal
     
-##### __*~~Creer un nouveau profil~~*__
+* User2 a deja utilisé le programme :
+    * Vérification de la bdd et des données
+    * Accés au menu principal
 
-* ~~Information a entrer par l'utilisateur~~
-    * ~~Input -- Nom d'utilisateur (pas de chiffre, pas de caractéres spéciaux)~~
-    * ~~Input -- Mail~~
-    * ~~Input -- Mot de passe~~
-    * ~~Input -- Valider -- Y or N (gestion des erreurs) (Retour à l'acceuil aprés Y)~~
-    * ~~Retour à l'accueil~~
+##### __*Menu principal (3 propositions)*__
 
-##### __*~~Se connecter~~*__
-
-* ~~Nom d'utilisateur~~
-* ~~Mot de passe~~
-* ~~Retour à l'accueil~~
-
-##### __*Nouvelle recherche*__
-
-* Choix de la catégorie (Parmis 5 max.)
-    * Catégorie N°1
-        * Aliment N°1 --- Substitut + Description + Magasin + lien vers Open Food Fact
-        * Etc...
-    * Catégorie N°2
-        * Aliment N°1 --- Substitut + Description + Magasin + lien vers Open Food Fact
-        * Etc...
-    * Catégorie N°3
-        * Aliment N°1 --- Substitut + Description + Magasin + lien vers Open Food Fact
-        * Etc...
-    * Catégorie N°4
-        * Aliment N°1 --- Substitut + Description + Magasin + lien vers Open Food Fact
-        * Etc...
-    * Catégorie N°5
-        * Aliment N°1 --- Substitut + Description + Magasin + lien vers Open Food Fact
-        * Etc...
-
-##### __*Voir mes recherches enregistrées ~~(nécessite un compte)~~*__
-
-* Recherche(s) enregistrée(s)
-    * Recherche 1
-    * Etc...
+* User1 choisi de remplacé un produit :
+    * User1 choisit une catégories parmit celles proposées
+    * User1 choisit un produit parmit ceux de la catégorie choisie
+    * User1 Sauvegarde son choix et son produit substituant
+    * User1 choisit de revenir au menu principal ou de quitter le programme
     
-##### __*Quitter*__
+* User2 choisi de consulter ses produits sauvegardés :
+    * User2 consulte ses produits sauvegardés et revient au menu principal
+    
+* User3 choisit de quitter le programme
+    * User3 ferme le programme
 
-* Fermeture du programme
-
----
-#### Idées diverses (libs) :
-
-Relation SQL <> Python :
-* Lib Sqlite3
-* mysql-connector
-
-Recupération des données d'Open Fact Food :
-* Scrappy (récup de données HTML en JSON)
-* requests (requetes sur API en JSON)
-* json (Encodage et décodage fichier JSON)
----
+___
 #### Versions :
+* _Version 2.1 - 11/03/2020 - Oliten : Final version_
+* _Version 2.0 - 09/03/2020 - Oliten : Nouvelle branche (Pour POO)_
+* _Version 1.5 - 24/02/2020 - Oliten : Pre final version_
+* _Version 1.4 - 10/02/2020 - Oliten : Code Optimisation & suppresion function inutiles_
+* _Version 1.3 - 06/02/2020 - Oliten : PEP8 Optimisation_
 * _Version 1.2.1 - 06/02/2020 - Oliten : Mise à jour suivant mentor_ 
 * _Version 1.2 - 13/01/2020 - Oliten : Mise à jour suivant mentor_ 
 * _Version 1.1 - 09/01/2020 - Oliten : Ajout "Idées diverses" & "Versions"_ 

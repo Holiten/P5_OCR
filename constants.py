@@ -2,7 +2,7 @@
 
 CATEGORIES = {'Yaourts': 'https://fr.openfoodfacts.org/categorie/yaourts/',
               'Fromages': 'https://fr.openfoodfacts.org/categorie/fromages/',
-              'Boissons': 'https://fr.openfoodfacts.org/categorie/boissons/'}
+              'Soupes': 'https://fr.openfoodfacts.org/categorie/soupes/'}
 
 
 
@@ -36,6 +36,6 @@ CONFIG_TABLES = {'user' : USER_NAME,
                  'auth_plugin' : PASSWORD_TYPE
                  }
 
-CAT_1 = "Boissons"
+CAT_1 = "Soupes"
 CAT_2 = "Fromages"
 CAT_3 = "Yaourts"

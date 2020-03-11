@@ -1,8 +1,5 @@
 """V.2.0 - File to create the products object and its methods"""
 
-import mysql.connector
-from constants import CONFIG_TABLES
-
 class Products:
     """Class to create the product object and its methods"""
     def __init__(self, cat, apidata):
@@ -19,8 +16,7 @@ class Products:
 
     def insert(self):
         """Method to insert products in bdd"""
-        cnx = mysql.connector.connect(**CONFIG_TABLES)
-        cursor = cnx.cursor()
+
 
         sql = "INSERT INTO products (name_product, score_product, product_url, product_store)" \
               "VALUES (%s, %s, %s, %s)"
