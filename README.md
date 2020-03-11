@@ -11,19 +11,19 @@ ___
 * SQL Database & connexion SQL server (like [XAMPP](https://www.apachefriends.org/fr/index.html))
 ___
 #### Lancement du programme :
-* [Download](https://github.com/Holiten/P5_OCR) le repo github
-* Installation des packages (pip install -r requirements.txt)
-* Lancer le programme (python main.py)
+* [Download](https://github.com/Holiten/P5_OCR) github repo
+* Install packages (pip install -r requirements.txt)
+* Launch (python main.py)
 ___
 #### Fonctionnalités :
 
-+ Recherche d'aliments dans la base [Open Food Fact](https://fr.openfoodfacts.org/)
-    * Récuperation des données via un script
-    * Creation d'une bdd (si celle ci n'existe pas) via un script
-+ Interraction de l'utilisateur via le terminal ou interface graphique (amélioration future)
-+ Gestion des erreurs (mauvais input)
-+ Recherche via SQL
-+ Enregistrement
++ Search food in bdd with API [Open Food Fact](https://fr.openfoodfacts.org/)
+    * Data recovery via Python script
+    * Creation of database (if not exist) via a Python script
++ User interraction via terminal
++ Error handling (bad input)
++ Search via SQL
++ Save
 ---
 #### User stories :
 
@@ -57,11 +57,10 @@ ___
 ___
 #### Versions :
 * _Version 2.1 - 11/03/2020 - Oliten : Final version_
-* _Version 2.0 - 09/03/2020 - Oliten : Nouvelle branche (Pour POO)_
+* _Version 2.0 - 09/03/2020 - Oliten : New Github branch (For POO)_
 * _Version 1.5 - 24/02/2020 - Oliten : Pre final version_
-* _Version 1.4 - 10/02/2020 - Oliten : Code Optimisation & suppresion function inutiles_
+* _Version 1.4 - 10/02/2020 - Oliten : Code Optimisation & delete function inutiles_
 * _Version 1.3 - 06/02/2020 - Oliten : PEP8 Optimisation_
-* _Version 1.2.1 - 06/02/2020 - Oliten : Mise à jour suivant mentor_ 
-* _Version 1.2 - 13/01/2020 - Oliten : Mise à jour suivant mentor_ 
-* _Version 1.1 - 09/01/2020 - Oliten : Ajout "Idées diverses" & "Versions"_ 
-* _Version 1.0 - 09/01/2020 - Oliten : Premiére diffusion_ 
+* _Version 1.2.1 - 06/02/2020 - Oliten : Update after mentor meeting_ 
+* _Version 1.2 - 13/01/2020 - Oliten : Update after mentor meeting_  
+* _Version 1.0 - 09/01/2020 - Oliten : First version_ 
