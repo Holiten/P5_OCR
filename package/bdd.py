@@ -3,7 +3,7 @@
 import sys
 import mysql.connector
 import requests
-from products import Products
+from package.products import Products
 from constants import CONFIG_BDD, PAGE_NUMBER, CATEGORIES
 
 class Bdd:
@@ -69,12 +69,12 @@ class Bdd:
     def bdd_tables(self):
         """Method to tables in bdd"""
         sql_cat_table = "CREATE TABLE IF NOT EXISTS categories" \
-                        "(id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY," \
+                        "(id_cat INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY," \
                         "name_cat VARCHAR(50) UNIQUE NOT NULL," \
                         "INDEX(name_cat))"
 
         sql_products_table = "CREATE TABLE IF NOT EXISTS products" \
-                             "(id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY," \
+                             "(id_product INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY," \
                              "name_cat VARCHAR(50) NOT NULL," \
                              "name_product VARCHAR(500) NOT NULL," \
                              "score_product VARCHAR(1) NOT NULL," \
@@ -84,17 +84,27 @@ class Bdd:
                              "CONSTRAINT FOREIGN KEY(name_cat) REFERENCES categories(name_cat))"
 
         sql_user_sav = "CREATE TABLE IF NOT EXISTS user_save" \
-                       "(id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY," \
+                       "(id_save INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY," \
                        "id_product INT(11) NOT NULL," \
                        "id_sub INT(11) NOT NULL," \
                        "INDEX(id_product)," \
                        "INDEX(id_sub)," \
-                       "CONSTRAINT FOREIGN KEY(id_product) REFERENCES products(id)," \
-                       "CONSTRAINT FOREIGN KEY(id_sub) REFERENCES products(id))"
+                       "CONSTRAINT FOREIGN KEY(id_product) REFERENCES products(id_product)," \
+                       "CONSTRAINT FOREIGN KEY(id_sub) REFERENCES products(id_product))"
+
+        sql_cat_prod = "CREATE TABLE IF NOT EXISTS cat_prod" \
+                       "(id_cat_prod INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY," \
+                       "name_cat VARCHAR(50) NOT NULL," \
+                       "id_product INT(11) NOT NULL," \
+                       "INDEX(name_cat)," \
+                       "INDEX(id_product)," \
+                       "CONSTRAINT FOREIGN KEY(name_cat) REFERENCES categories(name_cat)," \
+                       "CONSTRAINT FOREIGN KEY(id_product) REFERENCES products(id_product))"
 
         self.cursor.execute(sql_cat_table)
         self.cursor.execute(sql_products_table)
         self.cursor.execute(sql_user_sav)
+        self.cursor.execute(sql_cat_prod)
         self.cnx.commit()
 
     def apidata_to_bdd(self):
@@ -115,6 +125,14 @@ class Bdd:
         self.cursor.executemany(sql_cat, data_cat)
         self.cursor.executemany(sql_products, data_prod)
         self.cnx.commit()
+
+    def insert_cat_prod(self):
+        """Method to insert data in cat_prod table"""
+        sql_cat_prod = "INSERT INTO cat_prod (name_cat, id_product) " \
+                       "SELECT products.name_cat, products.id_product " \
+                       "FROM products"
+
+        self.cursor.execute(sql_cat_prod)
 
     def get_cat(self, choice):
         """Retrieving categories and displaying them on the screen and choose one"""
@@ -156,9 +174,9 @@ class Bdd:
     def get_saved(self):
         """Method to get the saved products"""
         sql = "SELECT name_product, score_product, url_product, store_product FROM products" \
-              " INNER JOIN user_save ON products.id = user_save.id_product"
+              " INNER JOIN user_save ON products.id_product = user_save.id_product"
         sql_sub = "SELECT name_product, score_product, url_product, store_product FROM products" \
-                  " INNER JOIN user_save ON products.id = user_save.id_sub"
+                  " INNER JOIN user_save ON products.id_product = user_save.id_sub"
         self.cursor.execute(sql)
         data = self.cursor.fetchall()
         print("You had chooser :")
@@ -179,7 +197,7 @@ class Bdd:
     def substitute(self):
         """Offer a substitute for the chosen product"""
         self.cat_choice = (self.cat_choice,)
-        sql = "SELECT * FROM products WHERE id=%s"
+        sql = "SELECT * FROM products WHERE id_product=%s"
         p_choice = (self.product_choice,)
         self.cursor.execute(sql, p_choice)
         user_product = self.cursor.fetchone()

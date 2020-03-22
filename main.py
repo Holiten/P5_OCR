@@ -1,22 +1,22 @@
 """Main program with menus"""
 
 import sys
-from bdd import Bdd
+from package.bdd import Bdd
 from constants import CAT_1, CAT_2, CAT_3
 
 BDD = Bdd()
 
 print("Welcome to Pur Beurre")
-BDD.bdd_exist()
-BDD.load_data()
+# BDD.bdd_exist()
+# BDD.load_data()
 BDD.bdd_create()
 BDD.bdd_use()
 BDD.bdd_tables()
 BDD.apidata_to_bdd()
+BDD.insert_cat_prod()
 
 
-
-def main_menu():
+def main():
     """Main menu"""
     run = 1
     while run == 1:
@@ -32,7 +32,7 @@ def main_menu():
 
         elif uc_main == "2":
             BDD.get_saved()
-            main_menu()
+            main()
             run = 0
 
         elif uc_main == "Q" or uc_main == "q":
@@ -42,6 +42,7 @@ def main_menu():
         else:
             print("Choose a number or a letter corresponding to a choice")
             run = 1
+
 
 def cat_menu():
     """Categories menu"""
@@ -65,7 +66,7 @@ def cat_menu():
                 sauv_menu()
                 run = 0
             elif BDD.user_save == "N" or BDD.user_save == "n":
-                main_menu()
+                main()
                 run = 0
             else:
                 print("Choose a number or a letter corresponding to a choice")
@@ -81,7 +82,7 @@ def cat_menu():
                 sauv_menu()
                 run = 0
             elif BDD.user_save == "N" or BDD.user_save == "n":
-                main_menu()
+                main()
                 run = 0
             else:
                 print("Please choose a valid choice")
@@ -97,14 +98,14 @@ def cat_menu():
                 sauv_menu()
                 run = 0
             elif BDD.user_save == "N" or BDD.user_save == "n":
-                main_menu()
+                main()
                 run = 0
             else:
                 print("Please choose a valid choice")
                 run = 1
 
         elif uc_cat == "9":
-            main_menu()
+            main()
 
         elif uc_cat == "Q" or uc_cat == "q":
             quit_pb()
@@ -112,6 +113,7 @@ def cat_menu():
         else:
             print("Choose a number or a letter corresponding to a choice")
             run = 1
+
 
 def sauv_menu():
     """Save menu"""
@@ -124,7 +126,7 @@ def sauv_menu():
 
     while run == 1:
         if uc_sauv == "9":
-            main_menu()
+            main()
             run = 0
 
         elif uc_sauv == "Q" or uc_sauv == "q":
@@ -135,6 +137,7 @@ def sauv_menu():
             print("Please choose a valid choice")
             run = 1
 
+
 def back_or_quit():
     """Back or save menu"""
     run = 1
@@ -144,7 +147,7 @@ def back_or_quit():
     uc_bq = input(" >> ")
     while run == 1:
         if uc_bq == "9":
-            main_menu()
+            main()
             run = 0
 
         elif uc_bq == "Q" or uc_bq == "q":
@@ -155,12 +158,15 @@ def back_or_quit():
             print("Please choose a valid choice")
             run = 1
 
+
 def back():
     """Back menu"""
-    main_menu()
+    main()
+
 
 def quit_pb():
     """Quit menu"""
     sys.exit("Thank you see :=)")
 
-main_menu()
+if __name__ == "__main__":
+    main()

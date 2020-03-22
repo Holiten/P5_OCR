@@ -4,7 +4,9 @@ CATEGORIES = {'Yaourts': 'https://fr.openfoodfacts.org/categorie/yaourts/',
               'Fromages': 'https://fr.openfoodfacts.org/categorie/fromages/',
               'Soupes': 'https://fr.openfoodfacts.org/categorie/soupes/'}
 
-
+CAT = {1: "Yaourts",
+       2: "Fromages",
+       3: "Soupes"}
 
 """Get the size of a page"""
 # PAGE_SIZE = url_r_json['page_size']
@@ -23,17 +25,17 @@ DB_NAME = "ocr_p5"
 PASSWORD_TYPE = 'mysql_native_password'
 
 """BDD SQL configuration parameter"""
-CONFIG_BDD = {'user' : USER_NAME,
-              'password' : USER_PASSWORD,
-              'host' : USER_HOST,
-              'auth_plugin' : PASSWORD_TYPE
+CONFIG_BDD = {'user': USER_NAME,
+              'password': USER_PASSWORD,
+              'host': USER_HOST,
+              'auth_plugin': PASSWORD_TYPE
               }
 """BDD Tables SQL configuration parameter"""
-CONFIG_TABLES = {'user' : USER_NAME,
-                 'password' : USER_PASSWORD,
-                 'host' : USER_HOST,
-                 'database' : DB_NAME,
-                 'auth_plugin' : PASSWORD_TYPE
+CONFIG_TABLES = {'user': USER_NAME,
+                 'password': USER_PASSWORD,
+                 'host': USER_HOST,
+                 'database': DB_NAME,
+                 'auth_plugin': PASSWORD_TYPE
                  }
 
 CAT_1 = "Soupes"
