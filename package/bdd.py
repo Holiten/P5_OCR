@@ -133,6 +133,7 @@ class Bdd:
                        "FROM products"
 
         self.cursor.execute(sql_cat_prod)
+        self.cnx.commit()
 
     def get_cat(self, choice):
         """Retrieving categories and displaying them on the screen and choose one"""
