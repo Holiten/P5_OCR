@@ -7,8 +7,8 @@ from constants import CAT_1, CAT_2, CAT_3
 BDD = Bdd()
 
 print("Welcome to Pur Beurre")
-# BDD.bdd_exist()
-# BDD.load_data()
+BDD.bdd_exist()
+BDD.load_data()
 BDD.bdd_create()
 BDD.bdd_use()
 BDD.bdd_tables()
